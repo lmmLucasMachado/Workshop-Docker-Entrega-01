@@ -1,0 +1,11 @@
+FROM node:16.7-alpine3.14
+
+WORKDIR /chat-app
+
+COPY package.json .
+
+RUN yarn
+
+COPY . .
+
+EXPOSE 7001
