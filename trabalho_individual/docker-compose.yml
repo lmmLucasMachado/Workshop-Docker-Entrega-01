@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 services:
   users-service:
@@ -9,19 +9,8 @@ services:
       - 7101:7101
     depends_on: 
       - users-service-db
-    networks:
-      - conect_service
-
-  users-service-db:
-    container_name: user_service_db
-    ports:
-      - 7201:3306
-    image: mysql:5.7.20
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: db
-    networks:
-      - conect_service
+    links:
+      - users-service-db
 
   chat-service:
     container_name: chat_service
@@ -34,7 +23,17 @@ services:
     links:
       - chat-service-db
 
+  users-service-db:
+    container_name: user_service_db
+    ports:
+      - 7201:3306
+    image: mysql:5.7.20
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+
   chat-service-db:
+    container_name: chat_service_db
     image: mysql:5.7.20
     environment: 
       MYSQL_ROOT_PASSWORD: password
@@ -47,14 +46,14 @@ services:
     image: phpmyadmin
     ports: 
       - 7300:80
-    volumes:
-      - ./phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
     depends_on: 
       - users-service-db
       - chat-service-db
     links: 
       - users-service-db
       - chat-service-db
+    volumes:
+      - ./phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
 
   api-gateway:
     container_name: api_gateway
@@ -76,5 +75,5 @@ services:
     links:
       - api-gateway
 
-networks: 
-  conect_service:
+volumes:
+  phpmyadmin:
