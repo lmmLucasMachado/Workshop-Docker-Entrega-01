@@ -66,8 +66,15 @@ services:
       - users-service
       - chat-service
 
-
+  chat-app:
+    container_name: chat_app
+    build: chat-app/
+    ports:
+      - 7001:7001
+    depends_on:
+      - api-gateway
+    links:
+      - api-gateway
 
 networks: 
   conect_service:
-

@@ -1,11 +1,11 @@
-FROM node:16.7-alpine3.14
+FROM node:10.24
 
 WORKDIR /chat-app
 
-COPY package.json .
+COPY . .
 
 RUN yarn
 
-COPY . .
+CMD yarn watch
 
 EXPOSE 7001
