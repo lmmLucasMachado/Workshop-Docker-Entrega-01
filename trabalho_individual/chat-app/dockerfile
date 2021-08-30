@@ -1,0 +1,11 @@
+FROM node:10.24
+
+WORKDIR /chat-app
+
+COPY . .
+
+RUN yarn
+
+CMD yarn watch
+
+EXPOSE 7001
